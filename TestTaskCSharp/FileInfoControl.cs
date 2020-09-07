@@ -143,8 +143,7 @@ namespace TestTaskCSharp
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            try
-            {
+            
                 backgroundWorker.ReportProgress(0);
                 System.IO.StreamReader reader = new System.IO.StreamReader(inputFilePath);
                 System.IO.StreamWriter writer = new System.IO.StreamWriter(outputFilePath);
@@ -187,15 +186,18 @@ namespace TestTaskCSharp
 
                 reader.Close();
                 writer.Close();
-            }
-            catch
-            {
-                SetState(-1);
-            }
+            
+            
         }
 
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Error != null)
+            {
+                SetState(-1);
+                return;
+            }
+            
             SetState(2);
             progressBar1.Value = 100;
         }
